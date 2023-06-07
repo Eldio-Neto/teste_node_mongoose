@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redicect</title>
+</head>
+
+<body>
+    <%for(let i =0; i<links.length; i++){%>
+        <div id="<%=links[i].id%>">
+            <h2><%=links[i].title%></h2>
+            <div><%=links[i].description%></div>
+            <div><%=links[i].url%></div>
+            <button onclick="deleteLink('<%=links[i].id%>')">Deletar</button>
+            <a href="/edit/<%=links[i].id%>">editar</a>
+        </div>
+    <%}%>
+
+    <script>
+        async function deleteLink(id){
+            let request = fetch('/'+ id, {method: 'DELETE'});
+            let response = await request;           
+
+            if(response.status == 404){
+                let err= await response.json();
+                alert(err.message);
+            }else{
+                let Element = await response.text();
+                document.getElementById(Element).remove();
+            }            
+        }
+    </script>
+</body>
+
+</html>
